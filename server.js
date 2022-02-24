@@ -28,7 +28,14 @@ var server = http.createServer(function (request, response) {
   suffix = suffix === "js" ? "javascript" : suffix;
   //console.log(suffix);
   response.setHeader("Content-Type", `text/${suffix};charset=utf-8`);
-  let file1 = fs.readFileSync(`./public/${path}`);
+  let file1;
+  try {
+    file1 = fs.readFileSync(`./public/${path}`);
+  } catch (error) {
+    file1 = "文件不存在";
+    response.statusCode = 404;
+  }
+
   response.write(file1);
   response.end();
 
